@@ -1,7 +1,7 @@
 [
   {
     "date": "2026-09-11",
-    "time": "08:55 UTC",
+    "time": "09:28 UTC",
     "sites": {
       "antena3": {
         "modules": [
@@ -594,7 +594,468 @@
         "playable_total": 0
       },
       "lasexta": {
-        "modules": [],
+        "modules": [
+          [
+            "LOS AVISOS QUE SÍ HUBO",
+            [
+              [
+                "own",
+                "L",
+                0
+              ],
+              [
+                "own",
+                "M",
+                0
+              ],
+              [
+                "own",
+                "M",
+                0
+              ],
+              [
+                "own",
+                "M",
+                0
+              ],
+              [
+                "own",
+                "M",
+                0
+              ],
+              [
+                "own",
+                "M",
+                0
+              ]
+            ]
+          ],
+          [
+            "EN DIRECTO",
+            [
+              [
+                "own",
+                "L",
+                0
+              ]
+            ]
+          ],
+          [
+            "LA 'LEY DE NIETOS'",
+            [
+              [
+                "own",
+                "L",
+                0
+              ],
+              [
+                "own",
+                "M",
+                0
+              ],
+              [
+                "own",
+                "S",
+                0
+              ],
+              [
+                "own",
+                "M",
+                0
+              ]
+            ]
+          ],
+          [
+            "25 ANIVERSARIO DEL 11S",
+            [
+              [
+                "own",
+                "L",
+                0
+              ],
+              [
+                "own",
+                "M",
+                0
+              ],
+              [
+                "own",
+                "M",
+                0
+              ],
+              [
+                "own",
+                "S",
+                0
+              ]
+            ]
+          ],
+          [
+            "LA FÓRMULA 1 LLEGA A MADRID",
+            [
+              [
+                "own",
+                "L",
+                0
+              ],
+              [
+                "own",
+                "M",
+                0
+              ],
+              [
+                "own",
+                "M",
+                0
+              ]
+            ]
+          ],
+          [
+            "LA GRAN ESTAFA",
+            [
+              [
+                "own",
+                "L",
+                0
+              ]
+            ]
+          ],
+          [
+            "UN VESTIDO MILLONARIO",
+            [
+              [
+                "own",
+                "L",
+                0
+              ]
+            ]
+          ],
+          [
+            "Vídeos",
+            [
+              [
+                "own",
+                "L",
+                0
+              ],
+              [
+                "own",
+                "M",
+                0
+              ],
+              [
+                "own",
+                "M",
+                0
+              ]
+            ]
+          ],
+          [
+            "Destacamos",
+            [
+              [
+                "own",
+                "L",
+                0
+              ],
+              [
+                "own",
+                "M",
+                0
+              ],
+              [
+                "own",
+                "M",
+                0
+              ]
+            ]
+          ],
+          [
+            "Deportes",
+            [
+              [
+                "own",
+                "L",
+                0
+              ],
+              [
+                "own",
+                "M",
+                0
+              ],
+              [
+                "own",
+                "M",
+                0
+              ],
+              [
+                "own",
+                "M",
+                0
+              ]
+            ]
+          ],
+          [
+            "Más Vale Tarde",
+            [
+              [
+                "own",
+                "L",
+                0
+              ],
+              [
+                "own",
+                "M",
+                0
+              ],
+              [
+                "own",
+                "M",
+                0
+              ],
+              [
+                "own",
+                "M",
+                0
+              ]
+            ]
+          ],
+          [
+            "Zapeando",
+            [
+              [
+                "own",
+                "L",
+                0
+              ],
+              [
+                "own",
+                "M",
+                0
+              ],
+              [
+                "own",
+                "M",
+                0
+              ]
+            ]
+          ],
+          [
+            "Aruser@s",
+            [
+              [
+                "own",
+                "L",
+                0
+              ],
+              [
+                "own",
+                "M",
+                0
+              ],
+              [
+                "own",
+                "M",
+                0
+              ],
+              [
+                "own",
+                "M",
+                0
+              ]
+            ]
+          ],
+          [
+            "El Intermedio",
+            [
+              [
+                "own",
+                "L",
+                0
+              ],
+              [
+                "own",
+                "M",
+                0
+              ],
+              [
+                "own",
+                "M",
+                0
+              ],
+              [
+                "own",
+                "M",
+                0
+              ]
+            ]
+          ],
+          [
+            "laSexta cumple 20 años",
+            [
+              [
+                "own",
+                "L",
+                0
+              ],
+              [
+                "own",
+                "M",
+                0
+              ],
+              [
+                "own",
+                "M",
+                0
+              ]
+            ]
+          ],
+          [
+            "Desinformación: Europa tiene un plan",
+            [
+              [
+                "own",
+                "L",
+                0
+              ],
+              [
+                "own",
+                "M",
+                0
+              ],
+              [
+                "own",
+                "M",
+                0
+              ],
+              [
+                "own",
+                "M",
+                0
+              ]
+            ]
+          ],
+          [
+            "Ahora Qué Leo",
+            [
+              [
+                "own",
+                "L",
+                0
+              ],
+              [
+                "own",
+                "M",
+                0
+              ],
+              [
+                "own",
+                "M",
+                0
+              ]
+            ]
+          ],
+          [
+            "Lotería",
+            [
+              [
+                "own",
+                "L",
+                0
+              ],
+              [
+                "own",
+                "M",
+                0
+              ],
+              [
+                "own",
+                "M",
+                0
+              ]
+            ]
+          ],
+          [
+            "Portales temáticos",
+            [
+              [
+                "own",
+                "L",
+                0
+              ],
+              [
+                "own",
+                "M",
+                0
+              ],
+              [
+                "own",
+                "M",
+                0
+              ],
+              [
+                "own",
+                "M",
+                0
+              ]
+            ]
+          ],
+          [
+            "Stories laSexta",
+            [
+              [
+                "own",
+                "L",
+                0
+              ]
+            ]
+          ],
+          [
+            "LASEXTA Y FUNDACIÓN AXA",
+            [
+              [
+                "own",
+                "L",
+                0
+              ],
+              [
+                "om",
+                "M",
+                0
+              ],
+              [
+                "om",
+                "M",
+                0
+              ],
+              [
+                "om",
+                "M",
+                0
+              ]
+            ]
+          ],
+          [
+            "Las más leídas",
+            [
+              [
+                "own",
+                "L",
+                0
+              ],
+              [
+                "own",
+                "M",
+                0
+              ],
+              [
+                "own",
+                "S",
+                0
+              ]
+            ]
+          ]
+        ],
         "playable_total": 0
       },
       "telecinco": {
@@ -602,23 +1063,17 @@
         "playable_total": 0
       },
       "cuatro": {
+        "modules": [],
+        "playable_total": 0
+      },
+      "rtve": {
         "modules": [
           [
-            "Horizonte",
+            "Noticias",
             [
               [
                 "own",
                 "L",
-                1
-              ],
-              [
-                "own",
-                "M",
-                1
-              ],
-              [
-                "own",
-                "M",
                 0
               ],
               [
@@ -642,73 +1097,178 @@
                 0
               ],
               [
-                "ipl",
+                "own",
+                "M",
+                0
+              ],
+              [
+                "own",
+                "M",
+                0
+              ],
+              [
+                "own",
+                "M",
+                0
+              ],
+              [
+                "own",
+                "M",
+                0
+              ],
+              [
+                "own",
                 "M",
                 0
               ]
             ]
           ],
           [
-            "Todo es mentira",
+            "Más Noticias",
             [
               [
                 "own",
                 "L",
                 0
-              ],
+              ]
+            ]
+          ],
+          [
+            "EL PERRO ANDALUZ BY MANU SÁNCHEZ",
+            [
               [
                 "ip",
-                "S",
-                0
-              ],
-              [
-                "ipl",
-                "M",
-                0
-              ],
-              [
-                "ipl",
-                "M",
+                "L",
                 0
               ]
             ]
           ],
           [
-            "En boca de todos",
+            "ENTRETENIMIENTO",
             [
               [
                 "own",
                 "L",
-                1
+                0
               ],
               [
-                "ipl",
+                "own",
                 "M",
                 0
               ],
               [
-                "ip",
-                "S",
+                "own",
+                "M",
+                0
+              ],
+              [
+                "own",
+                "M",
+                0
+              ],
+              [
+                "own",
+                "M",
+                0
+              ],
+              [
+                "own",
+                "M",
+                0
+              ],
+              [
+                "own",
+                "M",
+                0
+              ],
+              [
+                "own",
+                "M",
+                0
+              ],
+              [
+                "own",
+                "M",
+                0
+              ],
+              [
+                "own",
+                "M",
+                0
+              ],
+              [
+                "own",
+                "M",
+                0
+              ],
+              [
+                "own",
+                "M",
+                0
+              ],
+              [
+                "own",
+                "M",
+                0
+              ],
+              [
+                "own",
+                "M",
+                0
+              ],
+              [
+                "own",
+                "M",
+                0
+              ],
+              [
+                "own",
+                "M",
+                0
+              ],
+              [
+                "own",
+                "M",
+                0
+              ],
+              [
+                "own",
+                "M",
+                0
+              ],
+              [
+                "own",
+                "M",
+                0
+              ],
+              [
+                "own",
+                "M",
+                0
+              ],
+              [
+                "own",
+                "M",
+                0
+              ],
+              [
+                "own",
+                "M",
+                0
+              ],
+              [
+                "own",
+                "M",
                 0
               ]
             ]
           ],
           [
-            "Noticias Cuatro",
+            "(sin título)",
             [
               [
                 "own",
                 "L",
-                1
-              ],
-              [
-                "own",
-                "M",
-                1
-              ],
-              [
-                "own",
-                "M",
                 0
               ],
               [
@@ -734,7 +1294,7 @@
             ]
           ],
           [
-            "Aldeas Infantiles\nEspeciales",
+            "LA SALA - RNE",
             [
               [
                 "om",
@@ -744,75 +1304,70 @@
             ]
           ],
           [
-            "El Chiringuito",
-            [
-              [
-                "ipl",
-                "L",
-                0
-              ],
-              [
-                "ipl",
-                "M",
-                0
-              ],
-              [
-                "ip",
-                "S",
-                0
-              ]
-            ]
-          ],
-          [
-            "First dates",
+            "Puente cree que no hubo \"avisos claros y con tiempo\" para ev",
             [
               [
                 "own",
                 "L",
-                1
+                0
               ],
               [
                 "own",
                 "M",
-                1
+                0
               ],
               [
                 "own",
                 "M",
-                1
+                0
               ],
               [
-                "ip",
+                "own",
                 "M",
                 0
               ],
               [
-                "ip",
+                "own",
                 "M",
-                0
-              ]
-            ]
-          ],
-          [
-            "NFL en Mediaset",
-            [
-              [
-                "ipl",
-                "L",
                 0
               ],
               [
-                "om",
+                "own",
+                "M",
+                0
+              ],
+              [
+                "own",
+                "M",
+                0
+              ],
+              [
+                "own",
+                "M",
+                0
+              ],
+              [
+                "own",
+                "M",
+                0
+              ],
+              [
+                "own",
+                "M",
+                0
+              ],
+              [
+                "own",
                 "M",
                 0
               ]
             ]
           ],
           [
-            "Súper Gómez: el hombre maratón",
+            "RNE refuerza la presencia y la voz de las mujeres en su nuev",
             [
               [
-                "ipl",
+                "own",
                 "L",
                 0
               ],
@@ -822,237 +1377,7 @@
                 0
               ],
               [
-                "ip",
-                "M",
-                0
-              ]
-            ]
-          ],
-          [
-            "En el punto de mira",
-            [
-              [
-                "ipl",
-                "L",
-                0
-              ]
-            ]
-          ],
-          [
-            "Código 10",
-            [
-              [
                 "own",
-                "L",
-                1
-              ],
-              [
-                "own",
-                "M",
-                1
-              ],
-              [
-                "own",
-                "M",
-                1
-              ],
-              [
-                "own",
-                "M",
-                0
-              ],
-              [
-                "own",
-                "M",
-                0
-              ],
-              [
-                "own",
-                "M",
-                0
-              ],
-              [
-                "ip",
-                "M",
-                0
-              ]
-            ]
-          ],
-          [
-            "Lo sabe, no lo sabe",
-            [
-              [
-                "own",
-                "L",
-                1
-              ],
-              [
-                "own",
-                "M",
-                0
-              ],
-              [
-                "own",
-                "M",
-                1
-              ],
-              [
-                "ip",
-                "M",
-                0
-              ]
-            ]
-          ],
-          [
-            "12 meses, 12 causas",
-            [
-              [
-                "om",
-                "L",
-                1
-              ]
-            ]
-          ],
-          [
-            "Viajeros Cuatro",
-            [
-              [
-                "own",
-                "L",
-                1
-              ],
-              [
-                "ipl",
-                "M",
-                0
-              ],
-              [
-                "ipl",
-                "M",
-                0
-              ],
-              [
-                "ip",
-                "M",
-                0
-              ]
-            ]
-          ],
-          [
-            "Punto Nemo",
-            [
-              [
-                "ip",
-                "L",
-                0
-              ]
-            ]
-          ],
-          [
-            "Iumiuky: especial gatos",
-            [
-              [
-                "own",
-                "L",
-                0
-              ],
-              [
-                "own",
-                "M",
-                0
-              ],
-              [
-                "own",
-                "M",
-                0
-              ],
-              [
-                "own",
-                "M",
-                0
-              ]
-            ]
-          ],
-          [
-            "Cuarto milenio",
-            [
-              [
-                "own",
-                "L",
-                1
-              ],
-              [
-                "own",
-                "M",
-                0
-              ],
-              [
-                "own",
-                "M",
-                0
-              ],
-              [
-                "ipl",
-                "M",
-                0
-              ],
-              [
-                "ip",
-                "M",
-                0
-              ]
-            ]
-          ],
-          [
-            "Próximamente",
-            [
-              [
-                "own",
-                "L",
-                1
-              ]
-            ]
-          ],
-          [
-            "Planes Cuatro",
-            [
-              [
-                "own",
-                "L",
-                1
-              ],
-              [
-                "own",
-                "M",
-                0
-              ],
-              [
-                "own",
-                "M",
-                0
-              ]
-            ]
-          ],
-          [
-            "First dates",
-            [
-              [
-                "own",
-                "L",
-                0
-              ]
-            ]
-          ],
-          [
-            "mitele Plaza",
-            [
-              [
-                "om",
-                "L",
-                0
-              ],
-              [
-                "om",
                 "M",
                 0
               ],
@@ -1062,17 +1387,33 @@
                 0
               ],
               [
+                "own",
+                "M",
+                0
+              ],
+              [
                 "om",
                 "M",
+                0
+              ],
+              [
+                "ipl",
+                "M",
+                0
+              ]
+            ]
+          ],
+          [
+            "(sin título)",
+            [
+              [
+                "own",
+                "L",
                 0
               ]
             ]
           ]
         ],
-        "playable_total": 18
-      },
-      "rtve": {
-        "modules": [],
         "playable_total": 0
       }
     }
