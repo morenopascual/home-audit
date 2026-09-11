@@ -32,31 +32,60 @@ CONTAINER_JS = {
 # inline video but actually opens a separate viewer page).
 EXTRACT_MODULES_JS = r"""
 (container) => {
-  function classify(el) {
-    const links = Array.from(el.querySelectorAll('a[href]'));
+  function itemFromNode(node) {
+    const a = node.querySelector('a[href]');
+    if (!a) return null;
+    let u;
+    try { u = new URL(a.href); } catch (e) { return null; }
+    const hasImg = !!node.querySelector('img');
+    let hasPlayableVideo = false;
+    node.querySelectorAll('video').forEach(v => {
+      if (!v.closest('a[href]')) hasPlayableVideo = true;
+    });
+    return { hostname: u.hostname, pathname: u.pathname, hasImg, hasPlayableVideo };
+  }
+
+  function dedupe(items) {
+    const seen = new Set();
+    return items.filter(it => {
+      const key = it.hostname + it.pathname;
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+  }
+
+  function itemsFor(child) {
+    // Preferred: one <article> (or similar repeating node) per visible card,
+    // so a card with several internal <video> tags (different qualities)
+    // still counts as ONE playable item, not several.
+    let nodes = Array.from(child.querySelectorAll('article'));
+    if (nodes.length === 0) nodes = Array.from(child.children);
+    const items = dedupe(nodes.map(itemFromNode).filter(Boolean));
+    if (items.length >= 1) return { items, precise: true };
+
+    // Fallback: just dedupe every link in the module. Video/playable
+    // detection is not reliable at this granularity, so it's left off
+    // rather than risk over-counting.
     const seen = new Map();
-    links.forEach(a => {
+    Array.from(child.querySelectorAll('a[href]')).forEach(a => {
       let u;
       try { u = new URL(a.href); } catch (e) { return; }
       const key = u.hostname + u.pathname;
       const hasImg = !!a.querySelector('img');
-      if (!seen.has(key)) seen.set(key, { hostname: u.hostname, pathname: u.pathname, hasImg });
+      if (!seen.has(key)) seen.set(key, { hostname: u.hostname, pathname: u.pathname, hasImg, hasPlayableVideo: false });
       else if (hasImg) seen.get(key).hasImg = true;
     });
-    return Array.from(seen.values());
+    return { items: Array.from(seen.values()), precise: false };
   }
+
   const out = [];
   Array.from(container.children).forEach((child) => {
-    const items = classify(child);
+    const { items, precise } = itemsFor(child);
     if (items.length === 0) return;
     const h = child.querySelector('h1,h2,h3,[class*="title" i]');
     const name = h ? h.innerText.trim().slice(0, 60) : '';
-    // playable = a <video> in this child that is not wrapped in a navigating <a>
-    let playableCount = 0;
-    child.querySelectorAll('video').forEach(v => {
-      if (!v.closest('a[href]')) playableCount++;
-    });
-    out.push({ name, items, playableCount });
+    out.push({ name, items, precise });
   });
   return out;
 }
@@ -137,3 +166,22 @@ SITES = {
 }
 
 SITE_ORDER = ["antena3", "lasexta", "telecinco", "cuatro", "rtve"]
+
+# Best-effort click on the most common EU cookie-consent banners, so they
+# don't sit on top of / block hydration of the content underneath.
+DISMISS_COOKIES_JS = r"""
+() => {
+  const selectors = [
+    '#onetrust-accept-btn-handler',
+    'button[id*="accept" i][id*="cookie" i]',
+    'button[class*="accept" i][class*="cookie" i]',
+    'button[aria-label*="Aceptar" i]',
+    'button[aria-label*="Accept" i]',
+  ];
+  for (const sel of selectors) {
+    const btn = document.querySelector(sel);
+    if (btn) { btn.click(); return true; }
+  }
+  return false;
+}
+"""
