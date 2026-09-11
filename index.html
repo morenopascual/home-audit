@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Home audit — Mediaset · Atresmedia · RTVE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#ffffff; --bg-alt:#F5F4F1; --ink:#17171A; --ink-soft:#5C5B57;
+    --line:#E2E0D9; --line-strong:#C9C6BC;
+    --c-own:#1D6FB8; --c-ip:#F6A94A; --c-ipl:#E8801F; --c-om:#6B6A66;
+    --serif:'Newsreader', Georgia, serif;
+    --sans:'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.5;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:920px;margin:0 auto;padding:48px 24px 80px;}
+  header.page{margin-bottom:36px;}
+  header.page .kicker{font-size:12.5px;color:var(--ink-soft);margin:0 0 10px;}
+  header.page h1{font-family:var(--serif);font-weight:500;font-size:clamp(28px,4vw,40px);line-height:1.15;margin:0 0 14px;max-width:18ch;}
+  header.page p{font-size:15px;color:var(--ink-soft);max-width:60ch;margin:0;}
+  nav.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin:36px 0 28px;overflow-x:auto;}
+  nav.tabs button{appearance:none;background:none;border:none;font-family:var(--sans);font-size:14.5px;color:var(--ink-soft);padding:10px 4px;margin-right:22px;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;}
+  nav.tabs button:hover{color:var(--ink);}
+  nav.tabs button.active{color:var(--ink);border-bottom-color:var(--ink);font-weight:500;}
+  section.panel{display:none;}
+  section.panel.active{display:block;}
+  .day-picker{display:flex;align-items:center;gap:10px;margin-bottom:20px;font-size:13.5px;color:var(--ink-soft);}
+  .day-picker select{font-family:var(--sans);font-size:13.5px;padding:6px 10px;border:1px solid var(--line-strong);border-radius:6px;background:#fff;color:var(--ink);}
+  .legend{display:flex;gap:20px;flex-wrap:wrap;font-size:12.5px;color:var(--ink-soft);margin-bottom:18px;}
+  .legend span{display:flex;align-items:center;gap:6px;}
+  .swatch{width:10px;height:10px;border-radius:2px;flex-shrink:0;}
+  .stackbar{display:flex;width:100%;height:26px;border-radius:5px;overflow:hidden;background:var(--bg-alt);}
+  .stackbar div{height:100%;}
+  .stackbar-labels{display:flex;justify-content:space-between;font-size:12.5px;color:var(--ink-soft);margin-top:8px;}
+  .playable-line{font-size:12.5px;color:var(--ink-soft);margin-top:8px;}
+  .modules{border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-top:22px;}
+  .modrow{display:flex;align-items:center;gap:14px;padding:9px 14px;border-bottom:1px solid var(--line);}
+  .modrow:last-child{border-bottom:none;}
+  .modrow:nth-child(odd){background:var(--bg-alt);}
+  .modname{flex:0 0 190px;font-size:13px;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .sq-row{display:flex;align-items:center;gap:4px;flex-wrap:wrap;}
+  .sq{border-radius:3px;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;}
+  .sq svg{width:46%;height:46%;fill:#fff;opacity:.95;}
+  .summary-row{margin-bottom:28px;}
+  .summary-row h3{font-family:var(--serif);font-weight:500;font-size:18px;margin:0 0 10px;}
+  .summary-table{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:32px;}
+  .summary-table th, .summary-table td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);}
+  .summary-table th{font-weight:500;color:var(--ink-soft);font-size:12.5px;}
+  .summary-table td.num, .summary-table th.num{text-align:right;font-variant-numeric:tabular-nums;}
+  footer.note{margin-top:56px;padding-top:20px;border-top:1px solid var(--line);font-size:12.5px;color:var(--ink-soft);max-width:66ch;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="page">
+    <p class="kicker">Análisis de estructura de home · Mediaset · Atresmedia · RTVE</p>
+    <h1>¿A dónde empuja cada portada?</h1>
+    <p>Foto diaria automática de las cinco portadas, a una hora distinta e impredecible cada día. Cada casilla es un bloque de contenido; el tamaño es su peso visual (héroe / secundario / mención) y el color, su destino. Las casillas con ▶ tienen un vídeo que se reproduce ahí mismo, sin salir de la portada. El Resumen muestra el promedio de todas las fotos capturadas hasta la fecha (1 día hasta ahora); en cada pestaña de canal puedes navegar día a día con el selector.</p>
+  </header>
+
+  <nav class="tabs" id="tabs"></nav>
+
+  <section class="panel" data-panel="resumen" id="panel-resumen"></section>
+  <section class="panel" data-panel="antena3" id="panel-antena3"></section>
+  <section class="panel" data-panel="lasexta" id="panel-lasexta"></section>
+  <section class="panel" data-panel="telecinco" id="panel-telecinco"></section>
+  <section class="panel" data-panel="cuatro" id="panel-cuatro"></section>
+  <section class="panel" data-panel="rtve" id="panel-rtve"></section>
+
+  <footer class="note">
+    Generado automáticamente el 2026-09-11 10:16 UTC. Excluye navegación, footer, redes sociales, banners publicitarios/afiliados y enlaces "ver más". El tamaño de cada casilla es una estimación (héroe / con imagen / solo texto), no una medida de píxeles exacta. Datos e histórico en <code>history.json</code> dentro del repositorio.
+  </footer>
+</div>
+
+<script>
+const C='var(--c-own)', IP='var(--c-ip)', IPL='var(--c-ipl)', OM='var(--c-om)';
+const CAT_COLOR = { own: C, ip: IP, ipl: IPL, om: OM };
+const PLAY_ICON = '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>';
+const SIZE_PX = { L: 26, M: 21, S: 16 };
+const AREA = { L: 26*26, M: 21*21, S: 16*16 };
+
+const HISTORY = [{"date": "2026-09-11", "time": "10:16 UTC", "sites": {"antena3": {"modules": [["Pablo López busca una voz que se atreva a ser diferente: “Te", [["own", "L", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0]]], ["NOTICIAS", [["own", "L", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0]]], ["LO MÁS VISTO", [["own", "L", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0]]], ["LAS HIJAS DE LA CRIADA", [["own", "L", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0]]], ["EL HORMIGUERO", [["own", "L", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0]]], ["PASAPALABRA", [["own", "L", 0], ["own", "M", 0], ["own", "M", 0]]], ["Y AHORA SONSOLES", [["own", "L", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0]]], ["SUEÑOS DE LIBERTAD", [["own", "L", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0]]], ["ESPEJO PÚBLICO", [["own", "L", 0], ["own", "M", 0], ["own", "M", 0]]], ["CONCURSOS", [["own", "L", 0], ["own", "M", 0]]], ["LOTERÍAS", [["own", "L", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0]]], ["MÁS NOTICIAS", [["own", "L", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0]]], ["ATRESPLAYER", [["ip", "L", 0], ["ip", "M", 0], ["ip", "M", 0], ["ip", "M", 0], ["ip", "M", 0], ["ip", "M", 0]]], ["DEPORTES", [["own", "L", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0]]], ["VAS A HACER CLIC Y LO SABES", [["own", "L", 0], ["own", "M", 0], ["om", "M", 0], ["om", "M", 0], ["om", "M", 0], ["om", "M", 0], ["om", "M", 0], ["own", "M", 0], ["om", "M", 0]]], ["Portal de Empleo de Atresmedia", [["om", "L", 0], ["om", "M", 0], ["om", "M", 0], ["om", "M", 0], ["om", "M", 0]]]], "playable_total": 0}, "lasexta": {"modules": [["LOS AVISOS QUE SÍ HUBO", [["own", "L", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0]]], ["EN DIRECTO", [["own", "L", 0]]], ["LA 'LEY DE NIETOS'", [["own", "L", 0], ["own", "M", 0], ["own", "S", 0], ["own", "M", 0]]], ["25 ANIVERSARIO DEL 11S", [["own", "L", 0], ["own", "M", 0], ["own", "M", 0], ["own", "S", 0]]], ["ACOSO ESCOLAR", [["own", "L", 0]]], ["LA FÓRMULA 1 LLEGA A MADRID", [["own", "L", 0], ["own", "M", 0], ["own", "M", 0]]], ["LA GRAN ESTAFA", [["own", "L", 0]]], ["Vídeos", [["own", "L", 0], ["own", "M", 0], ["own", "M", 0]]], ["Destacamos", [["own", "L", 0], ["own", "M", 0], ["own", "M", 0]]], ["Deportes", [["own", "L", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0]]], ["Más Vale Tarde", [["own", "L", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0]]], ["Zapeando", [["own", "L", 0], ["own", "M", 0], ["own", "M", 0]]], ["Aruser@s", [["own", "L", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0]]], ["El Intermedio", [["own", "L", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0]]], ["laSexta cumple 20 años", [["own", "L", 0], ["own", "M", 0], ["own", "M", 0]]], ["Desinformación: Europa tiene un plan", [["own", "L", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0]]], ["Ahora Qué Leo", [["own", "L", 0], ["own", "M", 0], ["own", "M", 0]]], ["Lotería", [["own", "L", 0], ["own", "M", 0], ["own", "M", 0]]], ["Portales temáticos", [["own", "L", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0]]], ["Stories laSexta", [["own", "L", 0]]], ["LASEXTA Y FUNDACIÓN AXA", [["own", "L", 0], ["om", "M", 0], ["om", "M", 0], ["om", "M", 0]]], ["Las más leídas", [["own", "L", 0], ["own", "M", 0], ["own", "S", 0]]]], "playable_total": 0}, "telecinco": {"modules": [["(sin título)", [["ip", "L", 0]]], ["25 años del 11S", [["own", "L", 1], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0]]], ["Supervivientes All Stars", [["own", "L", 0], ["own", "M", 0], ["ip", "M", 0], ["ip", "M", 0], ["ip", "M", 0]]], ["(sin título)", [["own", "L", 1], ["own", "M", 0], ["own", "S", 0], ["own", "M", 1], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "S", 0], ["own", "M", 0]]], ["La difícil situación a la que se enfrenta Fabiola Martínez d", [["own", "L", 0], ["own", "M", 0], ["own", "M", 0]]], ["Actualidad", [["own", "L", 1], ["ip", "M", 0], ["ipl", "M", 0], ["ipl", "M", 0]]], ["Aldeas Infantiles\nEspeciales", [["own", "L", 0]]], ["Telecinco Outdoor", [["own", "L", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0]]], ["El diario de Jorge", [["ip", "L", 0], ["ip", "M", 0], ["ipl", "M", 0]]], ["La isla de las tentaciones", [["own", "L", 1], ["ip", "M", 0], ["ip", "M", 0], ["ip", "M", 0]]], ["El chiringuito", [["ipl", "L", 0], ["ipl", "S", 0], ["ipl", "M", 0], ["ip", "M", 0]]], ["Rueda la letra", [["ipl", "L", 0], ["om", "M", 0], ["ip", "M", 0]]], ["El verano se mueve", [["ipl", "L", 0], ["ipl", "M", 0], ["ip", "M", 0]]], ["¡De viernes!", [["own", "L", 1], ["ip", "M", 0]]], ["12 meses, 12 causas", [["om", "L", 1]]], ["Mtmad", [["own", "L", 1], ["own", "M", 1], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0]]], ["NFL en Mediaset", [["ipl", "L", 0]]], ["Gran Premio de España de F1", [["ip", "L", 0], ["ipl", "M", 0]]], ["First dates", [["om", "L", 1], ["ip", "S", 0], ["om", "M", 0], ["ip", "M", 0]]], ["¡Allá tú!", [["own", "L", 1], ["own", "M", 0], ["ip", "S", 0]]], ["(sin título)", [["own", "L", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0]]], ["(sin título)", [["own", "L", 0], ["own", "M", 0], ["own", "M", 0]]], ["Más allá... de lo que surja", [["ipl", "L", 0], ["ipl", "M", 0]]], ["En todas las salsas", [["ipl", "L", 0]]], ["El precio justo", [["own", "L", 1], ["own", "M", 0], ["ip", "S", 0]]], ["Romi", [["ip", "L", 0]]], ["Más de Mediaset", [["om", "L", 0], ["om", "M", 0]]], ["Novedades en Mediaset", [["own", "L", 0], ["own", "M", 0], ["om", "M", 0]]], ["¡Apúntate al casting!", [["ip", "L", 0], ["own", "M", 0], ["om", "M", 0]]], ["Iumiuky: especial gatos", [["om", "L", 0], ["om", "M", 0], ["om", "M", 0], ["om", "M", 0]]], ["Cangrejos albinos", [["ipl", "L", 0], ["own", "M", 0]]], ["(sin título)", [["om", "L", 0], ["om", "M", 0], ["om", "M", 0], ["om", "M", 0]]], ["Regalos", [["own", "L", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0]]]], "playable_total": 12}, "cuatro": {"modules": [["Horizonte", [["own", "L", 1], ["own", "M", 1], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["ipl", "M", 0]]], ["Todo es mentira", [["own", "L", 0], ["ip", "S", 0], ["ipl", "M", 0], ["ipl", "M", 0]]], ["En boca de todos", [["own", "L", 1], ["ipl", "M", 0], ["ip", "S", 0]]], ["Noticias Cuatro", [["own", "L", 1], ["own", "M", 1], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0]]], ["Aldeas Infantiles\nEspeciales", [["om", "L", 0]]], ["El Chiringuito", [["ipl", "L", 0], ["ipl", "M", 0], ["ip", "S", 0]]], ["Cuarto milenio", [["own", "L", 1], ["own", "M", 1], ["own", "M", 0], ["own", "M", 0], ["ipl", "M", 0], ["ip", "M", 0]]], ["NFL en Mediaset", [["ipl", "L", 0], ["om", "M", 0]]], ["Súper Gómez: el hombre maratón", [["ipl", "L", 0], ["ipl", "M", 0], ["ip", "M", 0]]], ["First dates", [["own", "L", 1], ["own", "M", 1], ["own", "M", 1], ["ip", "M", 0], ["ip", "M", 0]]], ["En el punto de mira", [["ipl", "L", 0]]], ["Código 10", [["own", "L", 1], ["own", "M", 1], ["own", "M", 1], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["ip", "M", 0]]], ["Lo sabe, no lo sabe", [["own", "L", 1], ["own", "M", 0], ["own", "M", 1], ["ip", "M", 0]]], ["12 meses, 12 causas", [["om", "L", 1]]], ["Viajeros Cuatro", [["own", "L", 1], ["ipl", "M", 0], ["ipl", "M", 0], ["ip", "M", 0]]], ["Punto Nemo", [["ip", "L", 0]]], ["Iumiuky: especial gatos", [["own", "L", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0]]], ["Próximamente", [["own", "L", 1]]], ["Planes Cuatro", [["own", "L", 1], ["own", "M", 0], ["own", "M", 0]]], ["First dates", [["own", "L", 0]]], ["mitele Plaza", [["om", "L", 0], ["om", "M", 0], ["om", "M", 0], ["om", "M", 0]]]], "playable_total": 19}, "rtve": {"modules": [["Noticias", [["own", "L", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0]]], ["Más Noticias", [["own", "L", 0]]], ["EL PERRO ANDALUZ BY MANU SÁNCHEZ", [["ip", "L", 0]]], ["ENTRETENIMIENTO", [["own", "L", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0]]], ["(sin título)", [["own", "L", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0]]], ["LA SALA - RNE", [["om", "L", 0]]], ["Puente cree que no hubo \"avisos claros y con tiempo\" para ev", [["own", "L", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0], ["own", "M", 0]]], ["RNE refuerza la presencia y la voz de las mujeres en su nuev", [["own", "L", 0], ["ipl", "M", 0], ["own", "M", 0], ["om", "M", 0], ["own", "M", 0], ["om", "M", 0], ["ipl", "M", 0]]], ["(sin título)", [["own", "L", 0]]]], "playable_total": 0}}}];
+const SITE_META = {"antena3": {"label": "Antena 3", "own_label": "Antena3", "om_label": "Otras marcas del grupo"}, "lasexta": {"label": "laSexta", "own_label": "laSexta", "om_label": "Otras marcas del grupo"}, "telecinco": {"label": "Telecinco", "own_label": "Telecinco", "om_label": "Otro Mediaset"}, "cuatro": {"label": "Cuatro", "own_label": "Cuatro", "om_label": "Otro Mediaset"}, "rtve": {"label": "RTVE.es", "own_label": "RTVE.es", "om_label": "RNE (audio, mismo dominio)"}};
+const SITE_ORDER = ["antena3", "lasexta", "telecinco", "cuatro", "rtve"];
+
+function computeDaySummary(modules) {
+  const area = { own: 0, ip: 0, ipl: 0, om: 0 };
+  let playable = 0;
+  modules.forEach(([, items]) => items.forEach(([cat, size, isPlayable]) => {
+    area[cat] += AREA[size];
+    if (isPlayable) playable++;
+  }));
+  const total = Object.values(area).reduce((a, b) => a + b, 0) || 1;
+  const pct = k => Math.round(area[k] / total * 1000) / 10;
+  return { own: pct('own'), ip: pct('ip'), ipl: pct('ipl'), om: pct('om'),
+           player: Math.round((pct('ip') + pct('ipl')) * 10) / 10, playable };
+}
+
+function legendHTML(ownLabel, omLabel) {
+  return `<div class="legend">
+    <span><span class="swatch" style="background:${C}"></span>${ownLabel}</span>
+    <span><span class="swatch" style="background:${IP}"></span>Streaming · página</span>
+    <span><span class="swatch" style="background:${IPL}"></span>Streaming · reproductor (autoplay)</span>
+    <span><span class="swatch" style="background:${OM}"></span>${omLabel}</span>
+  </div>`;
+}
+
+function stackbarHTML(pcts, ownLabel, omLabel) {
+  return `<div class="stackbar">
+    <div style="width:${pcts.own}%;background:${C}"></div>
+    <div style="width:${pcts.ip}%;background:${IP}"></div>
+    <div style="width:${pcts.ipl}%;background:${IPL}"></div>
+    <div style="width:${pcts.om}%;background:${OM}"></div>
+  </div>
+  <div class="stackbar-labels">
+    <span>${ownLabel} ${pcts.own}%</span>
+    <span>Streaming ${pcts.player}%</span>
+    <span>${omLabel} ${pcts.om}%</span>
+  </div>`;
+}
+
+function modulesHTML(modules) {
+  return `<div class="modules">` + modules.map(([name, items]) => {
+    const squares = items.map(([cat, size, isPlayable]) =>
+      `<span class="sq" style="width:${SIZE_PX[size]}px;height:${SIZE_PX[size]}px;background:${CAT_COLOR[cat]}">${isPlayable ? PLAY_ICON : ''}</span>`
+    ).join('');
+    return `<div class="modrow"><span class="modname">${name}</span><div class="sq-row">${squares}</div></div>`;
+  }).join('') + `</div>`;
+}
+
+function renderSitePanel(siteKey, dateStr) {
+  const meta = SITE_META[siteKey];
+  const entry = HISTORY.find(e => e.date === dateStr);
+  const siteData = entry && entry.sites[siteKey];
+  const panel = document.getElementById('panel-' + siteKey);
+  if (!siteData) {
+    panel.innerHTML = `<p style="color:var(--ink-soft);font-size:14px">Sin foto para ${dateStr}.</p>`;
+    return;
+  }
+  const pcts = computeDaySummary(siteData.modules);
+  panel.innerHTML =
+    dayPickerHTML(siteKey, dateStr) +
+    legendHTML(meta.own_label, meta.om_label) +
+    stackbarHTML(pcts, meta.own_label, meta.om_label) +
+    `<div class="playable-line">${pcts.playable} vídeo${pcts.playable === 1 ? '' : 's'} reproducible${pcts.playable === 1 ? '' : 's'} en portada ese día</div>` +
+    modulesHTML(siteData.modules);
+  panel.querySelector('select').addEventListener('change', (e) => renderSitePanel(siteKey, e.target.value));
+}
+
+function dayPickerHTML(siteKey, selectedDate) {
+  const dates = HISTORY.filter(e => e.sites[siteKey]).map(e => e.date);
+  const options = dates.map(d => `<option value="${d}" ${d === selectedDate ? 'selected' : ''}>${d}</option>`).join('');
+  return `<div class="day-picker">Día: <select>${options}</select></div>`;
+}
+
+function renderSummary() {
+  const panel = document.getElementById('panel-resumen');
+  let html = '';
+  const rows = [];
+  SITE_ORDER.forEach(siteKey => {
+    const meta = SITE_META[siteKey];
+    const daily = HISTORY.filter(e => e.sites[siteKey]).map(e => computeDaySummary(e.sites[siteKey].modules));
+    if (daily.length === 0) return;
+    const avg = k => Math.round(daily.reduce((s, d) => s + d[k], 0) / daily.length * 10) / 10;
+    const avgPcts = { own: avg('own'), ip: avg('ip'), ipl: avg('ipl'), om: avg('om'), player: avg('player') };
+    const avgPlayable = Math.round(daily.reduce((s, d) => s + d.playable, 0) / daily.length * 10) / 10;
+    rows.push({ meta, avgPcts, avgPlayable, n: daily.length });
+    html += `<div class="summary-row"><h3>${meta.label} <span style="font-weight:400;color:var(--ink-soft);font-size:13px">(${daily.length} foto${daily.length === 1 ? '' : 's'})</span></h3>${stackbarHTML(avgPcts, meta.own_label, meta.om_label)}<div class="playable-line">${avgPlayable} vídeos reproducibles en portada de media</div></div>`;
+  });
+  html += `<table class="summary-table"><thead><tr>
+      <th>Portada</th><th class="num">Propia web</th><th class="num">Streaming</th>
+      <th class="num">· página</th><th class="num">· reproductor</th><th class="num">Otras marcas</th>
+      <th class="num">Vídeos/día (media)</th><th class="num">Fotos</th>
+    </tr></thead><tbody>` + rows.map(r =>
+      `<tr><td>${r.meta.label}</td><td class="num">${r.avgPcts.own}%</td><td class="num">${r.avgPcts.player}%</td>
+       <td class="num">${r.avgPcts.ip}%</td><td class="num">${r.avgPcts.ipl}%</td><td class="num">${r.avgPcts.om}%</td>
+       <td class="num">${r.avgPlayable}</td><td class="num">${r.n}</td></tr>`
+    ).join('') + `</tbody></table>`;
+  panel.innerHTML = html;
+}
+
+// Build tabs
+const tabDefs = [['resumen', 'Resumen']].concat(SITE_ORDER.map(k => [k, SITE_META[k].label]));
+const tabsNav = document.getElementById('tabs');
+tabDefs.forEach(([key, label], i) => {
+  const btn = document.createElement('button');
+  btn.textContent = label;
+  btn.dataset.tab = key;
+  if (i === 0) btn.classList.add('active');
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('nav.tabs button').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('section.panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('panel-' + key).classList.add('active');
+  });
+  tabsNav.appendChild(btn);
+});
+
+renderSummary();
+const latestDate = HISTORY.length ? HISTORY[HISTORY.length - 1].date : null;
+SITE_ORDER.forEach(siteKey => { if (latestDate) renderSitePanel(siteKey, latestDate); });
+document.getElementById('panel-resumen').classList.add('active');
+</script>
+</body>
+</html>
