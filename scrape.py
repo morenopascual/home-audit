@@ -43,43 +43,60 @@ def _extract(page, site_key):
         return None
 
 
-def scrape_site(page, site_key, site_cfg):
-    page.goto(site_cfg["url"], wait_until="networkidle", timeout=45000)
+def _best_effort_settle(page):
+    """Ad-heavy sites can keep background network activity going forever,
+    so 'networkidle' sometimes never fires. Try to wait for it briefly; if
+    it doesn't happen, just proceed -- the explicit sleeps around this call
+    already give lazy content a chance to render."""
     try:
-        page.evaluate(DISMISS_COOKIES_JS)
+        page.wait_for_load_state("networkidle", timeout=8000)
     except Exception:
         pass
-    page.wait_for_timeout(2000)  # let lazy-loaded modules settle
 
-    raw_modules = _extract(page, site_key)
 
-    if not raw_modules:
-        # One retry: reload fresh and give it more time before giving up.
-        # Covers both "container selector matched nothing" and "matched an
-        # empty/not-yet-hydrated container".
-        page.reload(wait_until="networkidle", timeout=45000)
+def scrape_site(page, site_key, site_cfg):
+    try:
+        page.goto(site_cfg["url"], wait_until="domcontentloaded", timeout=60000)
+        _best_effort_settle(page)
         try:
             page.evaluate(DISMISS_COOKIES_JS)
         except Exception:
             pass
-        page.wait_for_timeout(4000)
+        page.wait_for_timeout(2000)  # let lazy-loaded modules settle
+
         raw_modules = _extract(page, site_key)
 
-    if not raw_modules:
+        if not raw_modules:
+            # One retry: reload fresh and give it more time before giving up.
+            page.reload(wait_until="domcontentloaded", timeout=60000)
+            _best_effort_settle(page)
+            try:
+                page.evaluate(DISMISS_COOKIES_JS)
+            except Exception:
+                pass
+            page.wait_for_timeout(4000)
+            raw_modules = _extract(page, site_key)
+
+        if not raw_modules:
+            title = page.title()
+            raise RuntimeError(
+                f"[{site_key}] got 0 modules after retry. Page title was: {title!r}. "
+                f"Likely causes: cookie banner not dismissed, anti-bot page served "
+                f"instead of the real homepage, or the site's markup changed."
+            )
+        return raw_modules
+
+    except Exception as exc:
+        # Whatever went wrong -- a goto() timeout, a JS error, 0 modules --
+        # always leave a screenshot behind so a human can see what the bot saw.
         DEBUG_DIR.mkdir(exist_ok=True)
         shot_path = DEBUG_DIR / f"{site_key}.png"
         try:
             page.screenshot(path=str(shot_path), full_page=False)
         except Exception:
             shot_path = None
-        title = page.title()
-        raise RuntimeError(
-            f"[{site_key}] got 0 modules after retry. Page title was: {title!r}. "
-            f"{'Screenshot saved to ' + str(shot_path) if shot_path else 'Screenshot failed too.'} "
-            f"Likely causes: cookie banner not dismissed, anti-bot page served instead "
-            f"of the real homepage, or the site's markup changed."
-        )
-    return raw_modules
+        note = f" (screenshot: {shot_path})" if shot_path else " (screenshot also failed)"
+        raise RuntimeError(f"{exc}{note}") from exc
 
 
 def build_snapshot(raw_modules_by_site):
