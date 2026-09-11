@@ -21,9 +21,10 @@ from pathlib import Path
 
 from playwright.sync_api import sync_playwright
 
-from sites_config import CONTAINER_JS, EXTRACT_MODULES_JS, SITES, classify_link
+from sites_config import CONTAINER_JS, DISMISS_COOKIES_JS, EXTRACT_MODULES_JS, SITES, classify_link
 
 HISTORY_PATH = Path(__file__).parent / "history.json"
+DEBUG_DIR = Path(__file__).parent / "debug"
 
 SIZE_L, SIZE_M, SIZE_S = 27, 22, 17
 
@@ -34,18 +35,49 @@ def size_for(index_in_module, has_img):
     return "M" if has_img else "S"
 
 
-def scrape_site(page, site_key, site_cfg):
-    page.goto(site_cfg["url"], wait_until="networkidle", timeout=45000)
-    page.wait_for_timeout(1500)  # let lazy-loaded modules settle
-
+def _extract(page, site_key):
     container_handle = page.evaluate_handle(CONTAINER_JS[site_key])
     if container_handle is None:
-        raise RuntimeError(
-            f"[{site_key}] container selector matched nothing -- "
-            f"the site's markup probably changed, selector needs updating."
-        )
+        return None
+    return page.evaluate(EXTRACT_MODULES_JS, container_handle)
 
-    raw_modules = page.evaluate(EXTRACT_MODULES_JS, container_handle)
+
+def scrape_site(page, site_key, site_cfg):
+    page.goto(site_cfg["url"], wait_until="networkidle", timeout=45000)
+    try:
+        page.evaluate(DISMISS_COOKIES_JS)
+    except Exception:
+        pass
+    page.wait_for_timeout(2000)  # let lazy-loaded modules settle
+
+    raw_modules = _extract(page, site_key)
+
+    if not raw_modules:
+        # One retry: reload fresh and give it more time before giving up.
+        # Covers both "container selector matched nothing" and "matched an
+        # empty/not-yet-hydrated container".
+        page.reload(wait_until="networkidle", timeout=45000)
+        try:
+            page.evaluate(DISMISS_COOKIES_JS)
+        except Exception:
+            pass
+        page.wait_for_timeout(4000)
+        raw_modules = _extract(page, site_key)
+
+    if not raw_modules:
+        DEBUG_DIR.mkdir(exist_ok=True)
+        shot_path = DEBUG_DIR / f"{site_key}.png"
+        try:
+            page.screenshot(path=str(shot_path), full_page=False)
+        except Exception:
+            shot_path = None
+        title = page.title()
+        raise RuntimeError(
+            f"[{site_key}] got 0 modules after retry. Page title was: {title!r}. "
+            f"{'Screenshot saved to ' + str(shot_path) if shot_path else 'Screenshot failed too.'} "
+            f"Likely causes: cookie banner not dismissed, anti-bot page served instead "
+            f"of the real homepage, or the site's markup changed."
+        )
     return raw_modules
 
 
@@ -65,22 +97,10 @@ def build_snapshot(raw_modules_by_site):
                 if cat is None:
                     continue
                 size = size_for(i, item["hasImg"])
-                is_playable = 1 if (i == 0 and mod.get("playableCount", 0) > 0) else 0
-                # crude but consistent: if the module reported N playable
-                # videos, mark the first N image items (by DOM order) as playable
+                is_playable = 1 if item.get("hasPlayableVideo") else 0
                 items_out.append([cat, size, is_playable])
             if not items_out:
                 continue
-            # distribute playableCount across the first items that have images
-            remaining = mod.get("playableCount", 0)
-            for entry in items_out:
-                if remaining <= 0:
-                    entry[2] = 0
-                elif entry[1] in ("L", "M"):
-                    entry[2] = 1
-                    remaining -= 1
-                else:
-                    entry[2] = 0
             playable_total += sum(e[2] for e in items_out)
             out_modules.append([name, items_out])
         snapshot[site_key] = {"modules": out_modules, "playable_total": playable_total}
@@ -102,10 +122,16 @@ def run(dry_run=False, force=False):
     raw_by_site = {}
     with sync_playwright() as p:
         browser = p.chromium.launch()
-        page = browser.new_page(user_agent=(
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
-            "(KHTML, like Gecko) Chrome/126.0 Safari/537.36"
-        ))
+        context = browser.new_context(
+            user_agent=(
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+                "(KHTML, like Gecko) Chrome/126.0 Safari/537.36"
+            ),
+            locale="es-ES",
+            timezone_id="Europe/Madrid",
+            viewport={"width": 1440, "height": 900},
+        )
+        page = context.new_page()
         for site_key, site_cfg in SITES.items():
             print(f"Scraping {site_cfg['label']}...")
             try:
