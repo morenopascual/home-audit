@@ -10,7 +10,7 @@ from sites_config import SITES, SITE_ORDER
 ROOT = Path(__file__).parent
 HISTORY_PATH = ROOT / "history.json"
 TEMPLATE_PATH = ROOT / "dashboard_template.html"
-OUTPUT_PATH = ROOT / "home-audit-comparativa.html"
+OUTPUT_PATH = ROOT / "index.html"
 
 
 def generate():
