@@ -30,8 +30,7 @@ CONTAINER_JS = {
 # itself wrapped in a navigating <a href> (that pattern -- video wrapped in
 # a link -- is how every site's "Stories" carousel works: it looks like
 # inline video but actually opens a separate viewer page).
-EXTRACT_MODULES_JS = r"""
-(container) => {
+EXTRACT_MODULES_JS_BODY = r"""
   function itemFromNode(node) {
     const a = node.querySelector('a[href]');
     if (!a) return null;
@@ -56,17 +55,11 @@ EXTRACT_MODULES_JS = r"""
   }
 
   function itemsFor(child) {
-    // Preferred: one <article> (or similar repeating node) per visible card,
-    // so a card with several internal <video> tags (different qualities)
-    // still counts as ONE playable item, not several.
     let nodes = Array.from(child.querySelectorAll('article'));
     if (nodes.length === 0) nodes = Array.from(child.children);
     const items = dedupe(nodes.map(itemFromNode).filter(Boolean));
-    if (items.length >= 1) return { items, precise: true };
+    if (items.length >= 1) return items;
 
-    // Fallback: just dedupe every link in the module. Video/playable
-    // detection is not reliable at this granularity, so it's left off
-    // rather than risk over-counting.
     const seen = new Map();
     Array.from(child.querySelectorAll('a[href]')).forEach(a => {
       let u;
@@ -76,19 +69,34 @@ EXTRACT_MODULES_JS = r"""
       if (!seen.has(key)) seen.set(key, { hostname: u.hostname, pathname: u.pathname, hasImg, hasPlayableVideo: false });
       else if (hasImg) seen.get(key).hasImg = true;
     });
-    return { items: Array.from(seen.values()), precise: false };
+    return Array.from(seen.values());
   }
 
   const out = [];
   Array.from(container.children).forEach((child) => {
-    const { items, precise } = itemsFor(child);
+    const items = itemsFor(child);
     if (items.length === 0) return;
     const h = child.querySelector('h1,h2,h3,[class*="title" i]');
     const name = h ? h.innerText.trim().slice(0, 60) : '';
-    out.push({ name, items, precise });
+    out.push({ name, items });
   });
   return out;
-}
+"""
+
+
+def full_extraction_js(site_key):
+    """One self-contained JS function: finds the container AND extracts its
+    modules in a single evaluate() call, so a missing container comes back
+    as a real, unambiguous `null` -- not a JSHandle wrapping null (which is
+    truthy in Python and was silently causing a crash-and-swallow bug)."""
+    container_expr = CONTAINER_JS[site_key]
+    return f"""
+() => {{
+  let container;
+  try {{ container = {container_expr}; }} catch (e) {{ container = null; }}
+  if (!container) return null;
+{EXTRACT_MODULES_JS_BODY}
+}}
 """
 
 
