@@ -55,7 +55,7 @@ jobs:
         run: |
           git config user.name "home-audit-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add history.json home-audit-comparativa.html debug/ 2>/dev/null || git add history.json home-audit-comparativa.html
+          git add history.json index.html debug/ 2>/dev/null || git add history.json index.html
           git diff --cached --quiet || git commit -m "Daily snapshot $(date -u +%F)"
           git pull --rebase
           git push
