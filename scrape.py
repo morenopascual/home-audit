@@ -21,7 +21,7 @@ from pathlib import Path
 
 from playwright.sync_api import sync_playwright
 
-from sites_config import CONTAINER_JS, DISMISS_COOKIES_JS, EXTRACT_MODULES_JS, SITES, classify_link
+from sites_config import DISMISS_COOKIES_JS, SITES, classify_link, full_extraction_js
 
 HISTORY_PATH = Path(__file__).parent / "history.json"
 DEBUG_DIR = Path(__file__).parent / "debug"
@@ -36,10 +36,11 @@ def size_for(index_in_module, has_img):
 
 
 def _extract(page, site_key):
-    container_handle = page.evaluate_handle(CONTAINER_JS[site_key])
-    if container_handle is None:
+    try:
+        return page.evaluate(full_extraction_js(site_key))
+    except Exception as exc:
+        print(f"  [{site_key}] extraction JS raised: {exc}", file=sys.stderr)
         return None
-    return page.evaluate(EXTRACT_MODULES_JS, container_handle)
 
 
 def scrape_site(page, site_key, site_cfg):
